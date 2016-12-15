@@ -2,12 +2,61 @@
 
 namespace App\Http\Controllers;
 
+use App\Messages;
+use App\Product;
 use App\User;
 use Illuminate\Support\Facades\Input;
 use Hash;
 
 class ApiController extends Controller
 {
+    public function addProduct()
+    {
+        $uyeEmail = Input::get('uyeEmail');
+        $urunAdi = Input::get('urunAdi');
+        $aciklama = Input::get('aciklama');
+        $fiyat = Input::get('fiyat');
+        $stok = Input::get('stok');
+        $token = Input::get('token');
+
+
+        if (User::where('login_token', $token)->first()) { //token kontrol
+            if ($uyeEmail == '' || $urunAdi == '' || $fiyat == '' || $stok == '') {
+                return response()->json([
+                    'case' => '0',
+                    'mesaj' => 'degerler bos olmamali'
+                ]);
+            } else {
+                if (Product::where('uye_email', $uyeEmail)->where('urun_adi', $urunAdi)->first()) {
+                    $update = Product::where('uye_email', $uyeEmail)->where('urun_adi', $urunAdi)->update(['aciklama' => $aciklama, 'fiyat' => $fiyat, 'stok' => $stok]);
+                    if ($update) {
+                        return response()->json([
+                            'case' => '1',
+                            'mesaj' => 'urun guncellendi'
+                        ]);
+                    } else {
+                        return response()->json([
+                            'case' => '0',
+                            'mesaj' => 'ayni degerler girildi'
+                        ]);
+                    }
+
+                } else {
+                    Product::create(['uye_email' => $uyeEmail, 'urun_adi' => $urunAdi, 'aciklama' => $aciklama, 'fiyat' => $fiyat, 'stok' => $stok]); //veritabanı kayıt
+                    return response()->json([
+                        'case' => '1',
+                        'mesaj' => 'kayit basarili'
+                    ]);
+                }
+            }
+        } else {
+            return response()->json([
+                'case' => '0',
+                'mesaj' => 'hatali oturum'
+            ]);
+        }
+    }
+
     public function login()
     {
         $user = User::where('email', Input::get('email'))->first();

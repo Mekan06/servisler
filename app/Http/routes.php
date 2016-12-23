@@ -23,4 +23,5 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('login', 'ApiController@login');
     Route::get('register', 'ApiController@register');
     Route::get('addProduct', 'ApiController@addProduct');
+    Route::get('userPanel', 'ApiController@userPanel');
 });

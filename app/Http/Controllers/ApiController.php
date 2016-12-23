@@ -10,6 +10,26 @@ use Hash;
 
 class ApiController extends Controller
 {
+    public function userPanel()
+    {
+        $token = Input::get('token');
+        $uye = User::where('login_token', $token)->first();
+        if ($uye) { //token kontrol
+            $uyeEmail = User::where('login_token', $token)->first()->email;
+            $urunler = Product::where('uye_email', $uyeEmail)->select()->get(); //kullanicinin tum urunlerini getirir
+            return response()->json([
+                'case' => '1',
+                'urunler' => $urunler,
+                'mesaj' => 'Islem basarili'
+            ]);
+        } else {
+            return response()->json([
+                'case' => '0',
+                'mesaj' => 'Uye girisi yapilmali'
+            ]);
+        }
+    }
+
     public function addProduct()
     {
         $uyeEmail = Input::get('uyeEmail');

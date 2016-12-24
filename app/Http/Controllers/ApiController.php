@@ -17,11 +17,21 @@ class ApiController extends Controller
         if ($uye) { //token kontrol
             $uyeEmail = User::where('login_token', $token)->first()->email;
             $urunler = Product::where('uye_email', $uyeEmail)->select()->get(); //kullanicinin tum urunlerini getirir
-            return response()->json([
-                'case' => '1',
-                'urunler' => $urunler,
-                'mesaj' => 'Islem basarili'
-            ]);
+            if($urunler){
+                return response()->json([
+                    'case' => '1',
+                    'urunler' => $urunler,
+                    'mesaj' => 'Islem basarili'
+                ]);
+            }
+            else{
+                return response()->json([
+                    'case' => '0',
+                    'urunler' => $urunler,
+                    'mesaj' => 'Kayitli urun yok'
+                ]);
+            }
+
         } else {
             return response()->json([
                 'case' => '0',

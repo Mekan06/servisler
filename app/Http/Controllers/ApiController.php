@@ -17,14 +17,13 @@ class ApiController extends Controller
         if ($uye) { //token kontrol
             $uyeEmail = User::where('login_token', $token)->first()->email;
             $urunler = Product::where('uye_email', $uyeEmail)->select()->get(); //kullanicinin tum urunlerini getirir
-            if($urunler){
+            if ($urunler) {
                 return response()->json([
                     'case' => '1',
                     'urunler' => $urunler,
                     'mesaj' => 'Islem basarili'
                 ]);
-            }
-            else{
+            } else {
                 return response()->json([
                     'case' => '0',
                     'urunler' => $urunler,
@@ -47,6 +46,7 @@ class ApiController extends Controller
         $aciklama = Input::get('aciklama');
         $fiyat = Input::get('fiyat');
         $stok = Input::get('stok');
+        $sehir = Input::get('sehir');
         $token = Input::get('token');
 
 
@@ -58,7 +58,7 @@ class ApiController extends Controller
                 ]);
             } else {
                 if (Product::where('uye_email', $uyeEmail)->where('urun_adi', $urunAdi)->first()) {
-                    $update = Product::where('uye_email', $uyeEmail)->where('urun_adi', $urunAdi)->update(['aciklama' => $aciklama, 'fiyat' => $fiyat, 'stok' => $stok]);
+                    $update = Product::where('uye_email', $uyeEmail)->where('urun_adi', $urunAdi)->update(['aciklama' => $aciklama, 'fiyat' => $fiyat, 'stok' => $stok, 'sehir' => $sehir]);
                     if ($update) {
                         return response()->json([
                             'case' => '1',

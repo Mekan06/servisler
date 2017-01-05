@@ -89,11 +89,19 @@ class ApiController extends Controller
                     }
 
                 } else {
-                    Product::create(['uye_email' => $uyeEmail, 'urun_adi' => $urunAdi, 'sehir' => $sehir, 'aciklama' => $aciklama, 'fiyat' => $fiyat, 'stok' => $stok]); //veritabanı kayıt
-                    return response()->json([
-                        'case' => '1',
-                        'mesaj' => 'kayit basarili'
-                    ]);
+                    $create = Product::create(['uye_email' => $uyeEmail, 'urun_adi' => $urunAdi, 'aciklama' => $aciklama, 'fiyat' => $fiyat, 'stok' => $stok, 'sehir' => $sehir]); //veritabanı kayıt
+                    if($create){
+                        return response()->json([
+                            'case' => '1',
+                            'mesaj' => 'urun kayit basarili'
+                        ]);
+                    }
+                    else{
+                        return response()->json([
+                            'case' => '0',
+                            'mesaj' => 'degerler eklenirken bir hata olustu'
+                        ]);
+                    }
                 }
             }
         } else {

@@ -16,7 +16,7 @@ class Product extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'uye_email', 'urun_adi', 'aciklama', 'fiyat', 'stok',
+        'uye_email', 'urun_adi', 'aciklama', 'fiyat', 'stok', 'sehir',
     ];
     protected $hidden = [];
 }

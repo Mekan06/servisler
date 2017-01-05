@@ -10,6 +10,23 @@ use Hash;
 
 class ApiController extends Controller
 {
+    public function mainPanel()
+    {
+        $urunler = Product::select()->get(); // tum urunleri getirir
+        if ($urunler) {
+            return response()->json([
+                'case' => '1',
+                'urunler' => $urunler,
+                'mesaj' => 'Islem basarili'
+            ]);
+        } else {
+            return response()->json([
+                'case' => '0',
+                'mesaj' => 'Urunler cekilirken hata olustu'
+            ]);
+        }
+    }
+
     public function userPanel()
     {
         $token = Input::get('token');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Iletisim;
 use App\Messages;
 use App\Product;
 use App\User;
@@ -10,6 +11,26 @@ use Hash;
 
 class ApiController extends Controller
 {
+    public function iletisim()
+    {
+        $ad = Input::get('ad');
+        $soyad = Input::get('soyad');
+        $mesaj = Input::get('mesaj');
+
+        $iletisim = Iletisim::create(['ad' => $ad, 'soyad' => $soyad, 'mesaj' => $mesaj]);
+        if ($iletisim) {
+            return response()->json([
+                'case' => '1',
+                'mesaj' => 'Form yollandi'
+            ]);
+        } else {
+            return response()->json([
+                'case' => '0',
+                'mesaj' => 'Hata olustu-server'
+            ]);
+        }
+    }
+
     public function mainPanel()
     {
         $urunler = Product::select()->get(); // tum urunleri getirir
@@ -90,13 +111,12 @@ class ApiController extends Controller
 
                 } else {
                     $create = Product::create(['uye_email' => $uyeEmail, 'urun_adi' => $urunAdi, 'aciklama' => $aciklama, 'fiyat' => $fiyat, 'stok' => $stok, 'sehir' => $sehir]); //veritabanı kayıt
-                    if($create){
+                    if ($create) {
                         return response()->json([
                             'case' => '1',
                             'mesaj' => 'urun kayit basarili'
                         ]);
-                    }
-                    else{
+                    } else {
                         return response()->json([
                             'case' => '0',
                             'mesaj' => 'degerler eklenirken bir hata olustu'

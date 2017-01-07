@@ -25,4 +25,5 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('addProduct', 'ApiController@addProduct');
     Route::get('userPanel', 'ApiController@userPanel');
     Route::get('mainPanel', 'ApiController@mainPanel');
+    Route::get('iletisim', 'ApiController@iletisim');
 });
